@@ -28,7 +28,7 @@ function App() {
             <Route path="result" element={<Result/>}/>
           </Route> */}
 
-          <Route path='/quiz' element={<PrivateRoute><Quiz/></PrivateRoute>}/>
+          <Route path='/quiz/:id' element={<PrivateRoute><Quiz/></PrivateRoute>}/>
           <Route path='/result' element={<PrivateRoute><Result /></PrivateRoute>}/>
 
         </Routes>

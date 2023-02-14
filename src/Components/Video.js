@@ -1,15 +1,15 @@
 import React from 'react';
 import classes from '../Styles/Video.module.css';
-import image from '../assets/images/3.jpg';
+// import image from '../assets/images/3.jpg';
 
-const Video = () => {
+const Video = ({title, noq, id}) => {
     return (
            <div className={classes.video}>
-              <img src={image} alt="" />
-              <p>#23 React Hooks Bangla - React useReducer hook Bangla</p>
+              <img src={`http://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt="" />
+              <p>{title}</p>
               <div className={classes.qmeta}>
-                <p>10 Questions</p>
-                <p>Score : Not taken yet</p>
+                <p>{noq} Questions</p>
+                <p>Total Points : {noq*5}</p>
               </div>
             </div>
     );
