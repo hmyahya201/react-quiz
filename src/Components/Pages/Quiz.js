@@ -1,11 +1,13 @@
 import React from 'react';
 import { useReducer, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import  {useQuestions} from '../../my-hooks/useQuestions';
 import Answers from '../Answers';
 import MiniPlayer from '../MiniPlayer';
 import ProgressBar from '../ProgressBar';
 import _ from 'lodash';
+import {useAuth} from '../../contexts/AuthContext';
+import { getDatabase, ref, set } from 'firebase/database';
 
 
 const initialState = null;
@@ -35,6 +37,8 @@ const Quiz = () => {
   const {loading, error, questions} = useQuestions(id);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [qna, dispatch] = useReducer(reducer, initialState);
+  const {currentUser} = useAuth();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     dispatch({
@@ -43,12 +47,46 @@ const Quiz = () => {
     })
   }, [questions]);
 
- function handleAnswerChange(e, index){
+ const handleAnswerChange = (e, index)=>{
     dispatch({
       type: "answer",
       questionID: currentQuestion,
       optionIndex: index,
       value: e.target.checked,
+    });
+  };
+
+  //nexeQuestion function
+  const nextQuestion = ()=> {
+    if(currentQuestion + 1< questions.length){
+      setCurrentQuestion((prevCurrent)=> prevCurrent + 1)
+    }
+  }
+  
+  //prevQuestion function
+  const prevQuestions = ()=>{
+    if(currentQuestion >= 1 && currentQuestion <= questions.length){
+      setCurrentQuestion((prevCurrent)=> prevCurrent - 1)
+    }
+  }
+
+  //progressBar function
+  const percentage = questions.length> 0 ? ((currentQuestion + 1)/questions.length)*100: 0;
+
+  //submit function
+  async function submit(){
+    const {uid} = currentUser;
+    const db = getDatabase();
+    const resultRef = ref(db, `result/${uid}`);
+
+    await set(resultRef, {
+      [id]: qna
+    })
+    navigate({
+      pathname: `/result/${id}`,
+      state: {
+        qna,
+      },
     });
   }
     return (
@@ -60,7 +98,11 @@ const Quiz = () => {
         <h1>{qna[currentQuestion].title}</h1>
         <h4>Question can have multiple answers</h4>
         <Answers options={qna[currentQuestion].options} handleChange={handleAnswerChange} />
-        <ProgressBar />
+        <ProgressBar
+         next={nextQuestion} 
+         prev={prevQuestions}
+         submit={submit}
+         progress={percentage}/>
         <MiniPlayer />
         </>
       )}

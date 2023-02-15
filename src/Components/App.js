@@ -29,7 +29,7 @@ function App() {
           </Route> */}
 
           <Route path='/quiz/:id' element={<PrivateRoute><Quiz/></PrivateRoute>}/>
-          <Route path='/result' element={<PrivateRoute><Result /></PrivateRoute>}/>
+          <Route path='/result/:id' element={<PrivateRoute><Result /></PrivateRoute>}/>
 
         </Routes>
       </Layout>
