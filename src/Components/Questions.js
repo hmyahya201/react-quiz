@@ -2,15 +2,17 @@ import React from 'react';
 import Answers from './Answers';
 import classes from '../Styles/Questions.module.css';
 
-const Questions = () => {
+const Questions = ({answers = []}) => {
     return (
-        <div className={classes.question}>
+        answers.map((answer, index)=>(
+          <div className={classes.question} key={index}>
             <div className={classes.qtitle}>
               <span className="material-icons-outlined"> help_outline </span>
-              Here goes the question from Learn with Sumit?
+             {answer.title}
             </div>
-           <Answers />
+           <Answers input={false} options={answer.options}/>
           </div>
+        ))
     );
 };
 

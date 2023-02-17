@@ -17,20 +17,11 @@ function App() {
       <AuthProvider>
       <Layout>
         <Routes>
-          
           <Route path='/' element={<Home />}/>
           <Route path='/signup' element={<PublicRoute><Signup /></PublicRoute>}/>
           <Route path='/login' element={<PublicRoute><Login /></PublicRoute>}/>
-
-
-          {/* <Route path="/*" elenent={<PrivateOutlate/>}>
-            <Route path="quiz" element={<Quiz/>}/>
-            <Route path="result" element={<Result/>}/>
-          </Route> */}
-
           <Route path='/quiz/:id' element={<PrivateRoute><Quiz/></PrivateRoute>}/>
           <Route path='/result/:id' element={<PrivateRoute><Result /></PrivateRoute>}/>
-
         </Routes>
       </Layout>
       </AuthProvider>

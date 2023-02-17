@@ -9,7 +9,6 @@ import _ from 'lodash';
 import {useAuth} from '../../contexts/AuthContext';
 import { getDatabase, ref, set } from 'firebase/database';
 
-
 const initialState = null;
 const reducer = (state, action) =>{
   switch(action.type){
@@ -82,12 +81,7 @@ const Quiz = () => {
     await set(resultRef, {
       [id]: qna
     })
-    navigate({
-      pathname: `/result/${id}`,
-      state: {
-        qna,
-      },
-    });
+    navigate(`/result/${id}`,{state:{qna}});
   }
     return (
       <>
@@ -97,13 +91,16 @@ const Quiz = () => {
         <>
         <h1>{qna[currentQuestion].title}</h1>
         <h4>Question can have multiple answers</h4>
-        <Answers options={qna[currentQuestion].options} handleChange={handleAnswerChange} />
+        <Answers
+         input
+         options={qna[currentQuestion].options}
+          handleChange={handleAnswerChange} />
         <ProgressBar
          next={nextQuestion} 
          prev={prevQuestions}
          submit={submit}
          progress={percentage}/>
-        <MiniPlayer />
+        <MiniPlayer id={id}/>
         </>
       )}
        
